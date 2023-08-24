@@ -38,6 +38,21 @@ let words = [];
 let currentWordIndex = 0;
 let intervalId;
 
+
+function displayWordTypewriter(word, currentCount, totalCount) {
+  const typingSpeed = 100; // Adjust the typing speed as needed
+  let charIndex = 0;
+  let displayText = '';
+
+  const intervalId = setInterval(() => {
+    if (charIndex < word.length) {
+      displayText += word[charIndex];
+      wordContainer.textContent = displayText;
+      charIndex++;
+    } 
+  }, typingSpeed);
+}
+
 // Fetch available voices and populate the select options
 speechSynthesis.onvoiceschanged = () => {
   voices = speechSynthesis.getVoices();
@@ -78,7 +93,7 @@ async function readTextFile() {
   try {
     if (currentWordIndex < words.length) {
       const word = words[currentWordIndex];
-      displayWord(word, currentWordIndex + 1, words.length); // Display current word count and total word count
+       displayWordTypewriter(word, currentWordIndex + 1, words.length); // Display current word count and total word count
 
       for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
 		    countdownElement.classList.add('countdown-border'); // Add the class
