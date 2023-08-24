@@ -1,0 +1,107 @@
+body {
+  background-color: rgb(15, 14, 17);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #d0b85c;
+  overflow: hidden;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#wordContainer {
+  font-size: 14em;
+  text-align: center;
+  margin-bottom: 100px;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  /* Adjust the values as needed */
+}
+
+#countdown {
+  position: absolute;
+  bottom: 80px;
+  font-size: 5em;
+  color: #d47868;
+}
+
+.countdown-border {
+  border: 1px solid #00000;
+  /* Add border to the countdown element */
+  padding: 5px;
+  /* Add padding for spacing */
+  border-radius: 5px;
+  /* Add rounded corners for the border */
+}
+
+.voice-select-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 4px;
+  color: white;
+}
+
+.voice-select-container label {
+  margin-right: 5px;
+}
+
+.voice-select-container select {
+  width: 200px;
+}
+
+#poweredBy {
+  position: absolute;
+  color: white;
+}
+
+.marquee {
+  animation: marquee-animation 100s linear infinite;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  opacity: 0.5;
+  bottom: 70px;
+}
+
+@keyframes marquee-animation {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+#wordCount {
+  position: absolute;
+  bottom: 30px;
+  font-size: 1em;
+  color: #F1F8E9;
+}
+
+
+
+.word-count-border {
+  border: 1px solid #F1F8E9;
+  /* Add border to the countdown element */
+  padding: 5px;
+  /* Add padding for spacing */
+  border-radius: 5px;
+  /* Add rounded corners for the border */
+}
+
+#startButton {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
