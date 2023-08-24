@@ -24,8 +24,8 @@
     </select>
   </div>
 
-  <div id="wordContainer"></div>
-  <div id="meaningContainer"></div>
+  <div id="wordContainer">.......</div>
+  <div id="meaningContainer">.......</div>
   <div id="wordCount" class="word-count-border"><span id="wordCountValue">1/10</span></div>
   <div id="countdown" class="countdown-border"><span id="countdownValue">5</span></div>
   <div id="poweredBy" class="marquee">Powered by: tundaedu@gmail.com</div>
@@ -78,9 +78,9 @@
 
       // Reset counters and start reading
       currentWordIndex = 0;
-      countdownElement.style.display = 'block';
+     // countdownElement.style.display = 'block';
       countdownValueElement.textContent = TTS_DELAY / 1000;
-      countdownElement.classList.add('countdown-border'); // Add the class
+     // countdownElement.classList.add('countdown-border'); // Add the class
 
       const response = await fetch('tundaedu.csv');
       const text = await response.text();
@@ -106,7 +106,7 @@
           }
 
           for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
-            countdownElement.classList.add('countdown-border'); // Add the class
+           // countdownElement.classList.add('countdown-border'); // Add the class
             countdownValueElement.textContent = countdown;
             tickSound.currentTime = 0; // Reset the audio to the beginning
             tickSound.play();
@@ -128,11 +128,11 @@
           }
 
           currentWordIndex++;
-          countdownValueElement.textContent = '';
-          countdownElement.classList.remove('countdown-border'); // Remove the class
+        //  countdownValueElement.textContent = '';
+        //  countdownElement.classList.remove('countdown-border'); // Remove the class
           setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
         } else {
-          countdownElement.style.display = 'none';
+          //countdownElement.style.display = 'none';
         }
       } catch (error) {
         console.error('Error reading text file:', error);
@@ -141,7 +141,7 @@
 
     function displayWord(word, currentCount, totalCount) {
       wordContainer.textContent = word;
-      meaningContainer.textContent = "";
+     // meaningContainer.textContent = '';
     //  wordCountElement.textContent = `${currentCount} / ${totalCount}`;
     }
 
