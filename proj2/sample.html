@@ -12,19 +12,20 @@
     Your browser does not support the audio element.
   </audio>
 
-  <div id="voiceSelectContainer" class="voice-select-container">
+  <div id="voiceSelectContainer" class="voice-select-container-word">
     <select id="voiceSelect">
       <option value="">Select a word...</option>
     </select>
   </div>
 
-  <div id="voiceSelectContainer" class="voice-select-container">
+  <div id="voiceSelectContainer" class="voice-select-container-meaning">
     <select id="meaningLangSelect">
       <option value="">Select a meaning...</option>
     </select>
   </div>
 
   <div id="wordContainer"></div>
+  <div id="meaningContainer"></div>
   <div id="wordCount" class="word-count-border"><span id="wordCountValue">1/10</span></div>
   <div id="countdown" class="countdown-border"><span id="countdownValue">5</span></div>
   <div id="poweredBy" class="marquee">Powered by: tundaedu@gmail.com</div>
@@ -33,6 +34,8 @@
   <script>
     const tickSound = document.getElementById('tickSound');
     const wordContainer = document.getElementById('wordContainer');
+    const meaningContainer = document.getElementById('meaningContainer');
+    
     const countdownValueElement = document.getElementById('countdownValue');
     const countdownElement = document.getElementById('countdown');
     const wordCountElement = document.getElementById('wordCountValue');
@@ -55,10 +58,13 @@
         option.value = index;
         option.textContent = `${voice.name} (${voice.lang})`;
         voiceSelect.appendChild(option);
+      });
 
-        if (voice.name === 'Microsoft Heera - English (India)') { // Change 'Microsoft Heera - English (India)' to your desired default language code
-          voiceSelect.value = index;
-        }
+      voices.forEach((voice, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${voice.name} (${voice.lang})`;
+        meaningLangSelect.appendChild(option);
       });
     };
 
@@ -111,7 +117,7 @@
           tickSound.pause();
           tickSound.currentTime = 0;
 
-          displayWord(meaning, currentWordIndex + 1, meaning.length);
+          displayMeaning(meaning, currentWordIndex + 1, meaning.length);
           // Read the meaning with a different voice if selected
           const meaningVoiceIndex = meaningLangSelect.value;
           if (meaningVoiceIndex !== "0") {
@@ -135,8 +141,15 @@
 
     function displayWord(word, currentCount, totalCount) {
       wordContainer.textContent = word;
+      meaningContainer.textContent = "";
+    //  wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+    }
+
+    function displayMeaning(word, currentCount, totalCount) {
+      meaningContainer.textContent = word;
       wordCountElement.textContent = `${currentCount} / ${totalCount}`;
     }
+    
 
     function speakTextWithSelectedVoice(voice, text) {
       const utterance = new SpeechSynthesisUtterance();
