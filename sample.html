@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text to Speech with Voice Selection</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+   <div id="voiceSelectContainer" class="voice-select-container">
+    <select id="voiceSelect">
+      <option value="">Select a voice...</option>
+    </select>
+  </div>
+ 
+  <div id="wordContainer"></div>
+  <div id="wordCount" class="word-count-border"><span id="wordCountValue">1/10</span></div>
+  <div id="countdown" class="countdown-border"><span id="countdownValue">5</span></div>
+  <div id="poweredBy" class="marquee">Powered by: tundaedu@gmail.com</div>
+  <button id="startButton">Start</button>
+
+  <script>
+const wordContainer = document.getElementById('wordContainer');
+const countdownValueElement = document.getElementById('countdownValue');
+const countdownElement = document.getElementById('countdown');
+const wordCountElement = document.getElementById('wordCountValue');
+const startButton = document.getElementById('startButton');
+const voiceSelect = document.getElementById('voiceSelect');
+const WORD_DISPLAY_DELAY = 8000; // 8 seconds
+const TTS_DELAY = 5000; // 5 seconds
+
+let voices = [];
+let words = [];
+let currentWordIndex = 0;
+let intervalId;
+
+// Fetch available voices and populate the select options
+speechSynthesis.onvoiceschanged = () => {
+  voices = speechSynthesis.getVoices();
+  voices.forEach((voice, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = `${voice.name} (${voice.lang})`;
+    voiceSelect.appendChild(option);
+	
+	 if (voice.name === 'Microsoft Heera - English (India)') { // Change 'Microsoft Heera - English (India)' to your desired default language code
+      voiceSelect.value = index;
+    }
+  });
+};
+
+startButton.addEventListener('click', async () => {
+  // Hide the start button
+  startButton.style.display = 'none';
+  voiceSelectContainer.style.display= 'none';
+
+  // Stop any ongoing interval before starting a new one
+  clearInterval(intervalId);
+
+  // Reset counters and start reading
+  currentWordIndex = 0;
+  countdownElement.style.display = 'block';
+  countdownValueElement.textContent = TTS_DELAY / 1000;
+  countdownElement.classList.add('countdown-border'); // Add the class
+
+  const response = await fetch('words.txt');
+  const text = await response.text();
+  words = text.split(',');
+
+  readTextFile();
+});
+
+async function readTextFile() {
+  try {
+    if (currentWordIndex < words.length) {
+      const word = words[currentWordIndex];
+      displayWord(word, currentWordIndex + 1, words.length); // Display current word count and total word count
+
+      for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
+		    countdownElement.classList.add('countdown-border'); // Add the class
+        countdownValueElement.textContent = countdown;
+        await wait(1000); // Wait for 1 second
+      }
+
+      const selectedVoiceIndex = voiceSelect.value;
+      if (selectedVoiceIndex !== "") {
+        const selectedVoice = voices[selectedVoiceIndex];
+        speakTextWithSelectedVoice(selectedVoice, word);
+      } else {
+        speakText(word);
+      }
+
+      currentWordIndex++;
+      countdownValueElement.textContent = '';
+      countdownElement.classList.remove('countdown-border'); // Remove the class
+      setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
+    } else {
+      countdownElement.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error reading text file:', error);
+  }
+}
+
+function displayWord(word, currentCount, totalCount) {
+  wordContainer.textContent = word;
+  wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+}
+
+function speakTextWithSelectedVoice(voice, text) {
+  const utterance = new SpeechSynthesisUtterance();
+  utterance.voice = voice;
+  utterance.text = text;
+  speechSynthesis.speak(utterance);
+}
+
+function speakText(text) {
+  const utterance = new SpeechSynthesisUtterance();
+  utterance.text = text;
+  speechSynthesis.speak(utterance);
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+  </script>
+</body>
+</html>
