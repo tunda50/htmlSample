@@ -12,20 +12,20 @@
     Your browser does not support the audio element.
   </audio>
 
-  <div id="voiceSelectContainer" class="voice-select-container-word">
+  <div id="voiceSelectContainerWord" class="voice-select-container-word">
     <select id="voiceSelect">
       <option value="">Select a word...</option>
     </select>
   </div>
 
-  <div id="voiceSelectContainer" class="voice-select-container-meaning">
+  <div id="voiceSelectContainerMeaning" class="voice-select-container-meaning">
     <select id="meaningLangSelect">
       <option value="">Select a meaning...</option>
     </select>
   </div>
 
-  <div id="wordContainer">.......</div>
-  <div id="meaningContainer">.......</div>
+  <div id="wordContainer"></div>
+  <div id="meaningContainer"></div>
   <div id="wordCount" class="word-count-border"><span id="wordCountValue">1/10</span></div>
   <div id="countdown" class="countdown-border"><span id="countdownValue">5</span></div>
   <div id="poweredBy" class="marquee">Powered by: tundaedu@gmail.com</div>
@@ -35,7 +35,8 @@
     const tickSound = document.getElementById('tickSound');
     const wordContainer = document.getElementById('wordContainer');
     const meaningContainer = document.getElementById('meaningContainer');
-    
+    voiceSelectContainerWord= document.getElementById('voiceSelectContainerWord');
+    voiceSelectContainerMeaning= document.getElementById('voiceSelectContainerMeaning');
     const countdownValueElement = document.getElementById('countdownValue');
     const countdownElement = document.getElementById('countdown');
     const wordCountElement = document.getElementById('wordCountValue');
@@ -44,6 +45,7 @@
     const meaningLangSelect = document.getElementById('meaningLangSelect');
     const WORD_DISPLAY_DELAY = 8000; // 8 seconds
     const TTS_DELAY = 5000; // 5 seconds
+    const playTickSound = false;
 
     let voices = [];
     let words = [];
@@ -71,16 +73,14 @@
     startButton.addEventListener('click', async () => {
       // Hide the start button
       startButton.style.display = 'none';
-      //  voiceSelectContainer.style.display= 'none';
-
+      voiceSelectContainerMeaning.style.display= 'none';
+      voiceSelectContainerWord.style.display= 'none';
       // Stop any ongoing interval before starting a new one
       clearInterval(intervalId);
 
       // Reset counters and start reading
       currentWordIndex = 0;
-     // countdownElement.style.display = 'block';
       countdownValueElement.textContent = TTS_DELAY / 1000;
-     // countdownElement.classList.add('countdown-border'); // Add the class
 
       const response = await fetch('tundaedu.csv');
       const text = await response.text();
@@ -106,16 +106,19 @@
           }
 
           for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
-           // countdownElement.classList.add('countdown-border'); // Add the class
             countdownValueElement.textContent = countdown;
+            if (playTickSound) {
             tickSound.currentTime = 0; // Reset the audio to the beginning
             tickSound.play();
+            }
             await wait(1000); // Wait for 1 second
           }
 
+          if (playTickSound) {
           // Stop the tick sound
           tickSound.pause();
           tickSound.currentTime = 0;
+          }
 
           displayMeaning(meaning, currentWordIndex + 1, meaning.length);
           // Read the meaning with a different voice if selected
@@ -128,8 +131,6 @@
           }
 
           currentWordIndex++;
-        //  countdownValueElement.textContent = '';
-        //  countdownElement.classList.remove('countdown-border'); // Remove the class
           setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
         } else {
           //countdownElement.style.display = 'none';
@@ -141,13 +142,13 @@
 
     function displayWord(word, currentCount, totalCount) {
       wordContainer.textContent = word;
-     // meaningContainer.textContent = '';
-    //  wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+      meaningContainer.textContent = '';
+      wordCountElement.textContent = `${currentCount} / ${totalCount}`;
     }
 
     function displayMeaning(word, currentCount, totalCount) {
       meaningContainer.textContent = word;
-      wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+     // wordCountElement.textContent = `${currentCount} / ${totalCount}`;
     }
     
 

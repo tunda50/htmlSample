@@ -19,9 +19,10 @@ h1 {
   color: #d0b85c;
   font-size: 8em;
   text-align: center;
-  margin-top: -100px;
+  margin-top: -300px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   /* Adjust the values as needed */
+  position: relative; /* Add this line */
 }
 
 #meaningContainer {
@@ -29,13 +30,18 @@ h1 {
   font-size: 6em;
   text-align: center;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-  /* Adjust the values as needed */
+  position: absolute;
+  top: 50%; /* Center the meaningContainer vertically */
+  left: 50%; /* Center the meaningContainer horizontally */
+  transform: translate(-50%, -50%); /* Center the meaningContainer absolutely */
+  width: 100%; /* Expand the width to the full container width */
+ 
 }
 
 
 #countdown {
   position: absolute;
-  bottom: 60px;
+  bottom: 80px;
   font-size: 4em;
   color: #d47868;
 }
