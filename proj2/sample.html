@@ -113,7 +113,7 @@
             speakText(word);
           }
 
-          if (!isHeader){
+          if (!isHeader&&meaning){
           for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
             countdownValueElement.textContent = countdown;
             if (playTickSound) {
