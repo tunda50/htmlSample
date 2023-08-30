@@ -41,8 +41,8 @@ h1 {
 
 #countdown {
   position: absolute;
-  bottom: 80px;
-  font-size: 4em;
+  bottom: 130px;
+  font-size: 8em;
   color: #d47868;
 }
 
@@ -53,7 +53,7 @@ h1 {
   right: 10px;
   display: flex;
   align-items: center;
-  font-size: 4px;
+  font-size: 10px;
   color: white;
 }
 
@@ -63,7 +63,7 @@ h1 {
   right: 10px;
   display: flex;
   align-items: center;
-  font-size: 4px;
+  font-size: 10px;
   color: white;
 }
 
@@ -78,15 +78,16 @@ h1 {
 #poweredBy {
   position: absolute;
   color: white;
+  font-size: 50px;
 }
 
 .marquee {
-  animation: marquee-animation 100s linear infinite;
+  animation: marquee-animation 50s linear infinite;
   white-space: nowrap;
   overflow: hidden;
   width: 100%;
   opacity: 0.5;
-  bottom: 70px;
+  bottom: 110px;
 }
 
 @keyframes marquee-animation {
@@ -103,7 +104,7 @@ h1 {
 #wordCount {
   position: absolute;
   bottom: 30px;
-  font-size: 1em;
+  font-size: 4em;
   color: #F1F8E9;
 }
 
