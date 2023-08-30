@@ -108,9 +108,9 @@
           const selectedVoiceIndex = voiceSelect.value;
           if (selectedVoiceIndex !== "") {
             const selectedVoice = voices[selectedVoiceIndex];
-            speakTextWithSelectedVoice(selectedVoice, word);
+            speakWordWithSelectedVoice(selectedVoice, word, meaning);
           } else {
-            speakText(word);
+            speakWord(word, meaning);
           }
 
           if (!isHeader&&meaning){
@@ -135,14 +135,14 @@
             const meaningVoiceIndex = meaningLangSelect.value;
             if (meaningVoiceIndex !== "0") {
               const meaningVoice = voices[meaningVoiceIndex];
-              speakTextWithSelectedVoice(meaningVoice, meaning);
+              speakMeaningWithSelectedVoice(meaningVoice, meaning);
             } else {
-              speakText(meaning);
+              speakMeaning(meaning);
             }
           }
         }
           currentWordIndex++;
-          setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
+         // setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
        
         } else {
           //countdownElement.style.display = 'none';
@@ -173,17 +173,46 @@
     }
 
 
-    function speakTextWithSelectedVoice(voice, text) {
+    function speakWordWithSelectedVoice(voice, text ,meaning) {
       const utterance = new SpeechSynthesisUtterance();
       utterance.voice = voice;
       utterance.text = text;
       speechSynthesis.speak(utterance);
+      if(!meaning){
+        utterance.addEventListener('end', () => {
+            readTextFile();
+       });
+      }
     }
 
-    function speakText(text) {
+    function speakWord(text,meaning) {
       const utterance = new SpeechSynthesisUtterance();
       utterance.text = text;
       speechSynthesis.speak(utterance);
+      if(!meaning){
+        utterance.addEventListener('end', () => {
+            readTextFile();
+       });
+      }
+    }
+
+    function speakMeaningWithSelectedVoice(voice, text) {
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.voice = voice;
+      utterance.text = text;
+      utterance.addEventListener('end', () => {
+            readTextFile();
+       });
+      speechSynthesis.speak(utterance);
+    }
+
+    function speakMeaning(text) {
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.text = text;
+      speechSynthesis.speak(utterance);
+      utterance.addEventListener('end', () => {
+        readTextFile();
+      });
     }
 
     function wait(ms) {
