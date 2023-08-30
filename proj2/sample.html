@@ -97,8 +97,8 @@
           const wordAndMeaning = words[currentWordIndex].split(',');
           let word = wordAndMeaning[0].trim(); // Extract the word from the first column
           const meaning = wordAndMeaning[1] ? wordAndMeaning[1].trim() : null; // Extract the meaning from the second column
-
-          if (word.startsWith("#")) {
+          let isHeader = word.startsWith("#");
+          if (isHeader) {
             word = word.substring(1);
             displayHeader(word);
           } else {
@@ -113,6 +113,7 @@
             speakText(word);
           }
 
+          if (!isHeader){
           for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
             countdownValueElement.textContent = countdown;
             if (playTickSound) {
@@ -139,8 +140,10 @@
               speakText(meaning);
             }
           }
+        }
           currentWordIndex++;
           setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
+       
         } else {
           //countdownElement.style.display = 'none';
         }
@@ -154,14 +157,13 @@
       meaningContainer.textContent = '';
       headerContainer.textContent = '';
       wordCountElement.textContent = `${currentCount} / ${totalCount}`;
-      wordcount.display = block;
-      wordCountElement.display = block;
     }
 
     function displayHeader(word) {
       headerContainer.textContent = word;
       meaningContainer.textContent = '';
       wordContainer.textContent = '';
+      countdownValueElement.textContent='';
     }
 
     function displayMeaning(word, currentCount, totalCount) {
