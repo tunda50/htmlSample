@@ -24,6 +24,7 @@
     </select>
   </div>
 
+  <div id="headerContainer"></div>
   <div id="wordContainer"></div>
   <div id="meaningContainer"></div>
   <div id="wordCount" class="word-count-border"><span id="wordCountValue">1/10</span></div>
@@ -34,9 +35,10 @@
   <script>
     const tickSound = document.getElementById('tickSound');
     const wordContainer = document.getElementById('wordContainer');
+    const headerContainer = document.getElementById('headerContainer');
     const meaningContainer = document.getElementById('meaningContainer');
-    voiceSelectContainerWord= document.getElementById('voiceSelectContainerWord');
-    voiceSelectContainerMeaning= document.getElementById('voiceSelectContainerMeaning');
+    voiceSelectContainerWord = document.getElementById('voiceSelectContainerWord');
+    voiceSelectContainerMeaning = document.getElementById('voiceSelectContainerMeaning');
     const countdownValueElement = document.getElementById('countdownValue');
     const countdownElement = document.getElementById('countdown');
     const wordCountElement = document.getElementById('wordCountValue');
@@ -73,8 +75,8 @@
     startButton.addEventListener('click', async () => {
       // Hide the start button
       startButton.style.display = 'none';
-      voiceSelectContainerMeaning.style.display= 'none';
-      voiceSelectContainerWord.style.display= 'none';
+      voiceSelectContainerMeaning.style.display = 'none';
+      voiceSelectContainerWord.style.display = 'none';
       // Stop any ongoing interval before starting a new one
       clearInterval(intervalId);
 
@@ -93,10 +95,16 @@
       try {
         if (currentWordIndex < words.length) {
           const wordAndMeaning = words[currentWordIndex].split(',');
-          const word = wordAndMeaning[0].trim(); // Extract the word from the first column
-          const meaning = wordAndMeaning[1].trim(); // Extract the meaning from the second column
+          let word = wordAndMeaning[0].trim(); // Extract the word from the first column
+          const meaning = wordAndMeaning[1] ? wordAndMeaning[1].trim() : null; // Extract the meaning from the second column
 
-          displayWord(word, currentWordIndex + 1, words.length); // Display current word count and total word count
+          if (word.startsWith("#")) {
+            word = word.substring(1);
+            displayHeader(word);
+          } else {
+            displayWord(word, currentWordIndex + 1, words.length); // Display current word count and total word count
+          }
+
           const selectedVoiceIndex = voiceSelect.value;
           if (selectedVoiceIndex !== "") {
             const selectedVoice = voices[selectedVoiceIndex];
@@ -108,28 +116,29 @@
           for (let countdown = TTS_DELAY / 1000; countdown >= 0; countdown--) {
             countdownValueElement.textContent = countdown;
             if (playTickSound) {
-            tickSound.currentTime = 0; // Reset the audio to the beginning
-            tickSound.play();
+              tickSound.currentTime = 0; // Reset the audio to the beginning
+              tickSound.play();
             }
             await wait(1000); // Wait for 1 second
           }
 
           if (playTickSound) {
-          // Stop the tick sound
-          tickSound.pause();
-          tickSound.currentTime = 0;
+            // Stop the tick sound
+            tickSound.pause();
+            tickSound.currentTime = 0;
           }
 
-          displayMeaning(meaning, currentWordIndex + 1, meaning.length);
-          // Read the meaning with a different voice if selected
-          const meaningVoiceIndex = meaningLangSelect.value;
-          if (meaningVoiceIndex !== "0") {
-            const meaningVoice = voices[meaningVoiceIndex];
-            speakTextWithSelectedVoice(meaningVoice, meaning);
-          } else {
-            speakText(meaning);
+          if (meaning) {
+            displayMeaning(meaning, currentWordIndex + 1, meaning.length);
+            // Read the meaning with a different voice if selected
+            const meaningVoiceIndex = meaningLangSelect.value;
+            if (meaningVoiceIndex !== "0") {
+              const meaningVoice = voices[meaningVoiceIndex];
+              speakTextWithSelectedVoice(meaningVoice, meaning);
+            } else {
+              speakText(meaning);
+            }
           }
-
           currentWordIndex++;
           setTimeout(readTextFile, WORD_DISPLAY_DELAY - TTS_DELAY);
         } else {
@@ -143,14 +152,24 @@
     function displayWord(word, currentCount, totalCount) {
       wordContainer.textContent = word;
       meaningContainer.textContent = '';
+      headerContainer.textContent = '';
       wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+      wordcount.display = block;
+      wordCountElement.display = block;
+    }
+
+    function displayHeader(word) {
+      headerContainer.textContent = word;
+      meaningContainer.textContent = '';
+      wordContainer.textContent = '';
     }
 
     function displayMeaning(word, currentCount, totalCount) {
+      
       meaningContainer.textContent = word;
-     // wordCountElement.textContent = `${currentCount} / ${totalCount}`;
+      // wordCountElement.textContent = `${currentCount} / ${totalCount}`;
     }
-    
+
 
     function speakTextWithSelectedVoice(voice, text) {
       const utterance = new SpeechSynthesisUtterance();
