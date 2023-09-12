@@ -7,7 +7,6 @@ body {
   justify-content: center;
   height: 100vh;
   font-family: Arial, sans-serif;
- 
   overflow: hidden;
 }
 
@@ -30,6 +29,7 @@ h1 {
   font-size: 4em;
   text-align: center;
   margin-top: -300px;
+  padding: 200px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   /* Adjust the values as needed */
   position: relative; /* Add this line */
@@ -39,6 +39,7 @@ h1 {
   color: #7157db;
   font-size: 3em;
   text-align: center;
+  padding: 200px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   position: absolute;
   top: 50%; /* Center the meaningContainer vertically */
