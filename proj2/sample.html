@@ -94,7 +94,7 @@
     async function readTextFile() {
       try {
         if (currentWordIndex < words.length) {
-          const wordAndMeaning = words[currentWordIndex].split(',');
+          const wordAndMeaning = words[currentWordIndex].split('~');
           let word = wordAndMeaning[0].trim(); // Extract the word from the first column
           const meaning = wordAndMeaning[1] ? wordAndMeaning[1].trim() : null; // Extract the meaning from the second column
           let isHeader = word.startsWith("#");

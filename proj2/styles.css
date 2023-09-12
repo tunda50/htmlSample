@@ -17,7 +17,7 @@ h1 {
 
 #headerContainer{
   color: #efe0e9;
-  font-size: 8em;
+  font-size: 4em;
   text-align: center;
   position: absolute;
   margin-top: -200px;
@@ -27,7 +27,7 @@ h1 {
 
 #wordContainer {
   color: #d0b85c;
-  font-size: 8em;
+  font-size: 4em;
   text-align: center;
   margin-top: -300px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
@@ -37,7 +37,7 @@ h1 {
 
 #meaningContainer {
   color: #7157db;
-  font-size: 6em;
+  font-size: 3em;
   text-align: center;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   position: absolute;
