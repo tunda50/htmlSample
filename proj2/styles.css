@@ -45,7 +45,7 @@ h1 {
   top: 50%; /* Center the meaningContainer vertically */
   left: 50%; /* Center the meaningContainer horizontally */
   transform: translate(-50%, -50%); /* Center the meaningContainer absolutely */
-  width: 100%; /* Expand the width to the full container width */
+  width: 70%; /* Expand the width to the full container width */
  
 }
 
