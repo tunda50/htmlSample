@@ -46,7 +46,11 @@
     const voiceSelect = document.getElementById('voiceSelect');
     const meaningLangSelect = document.getElementById('meaningLangSelect');
     const COUNT_DOWN = 5; // 5 seconds
-    const playTickSound = true;
+    const playTickSound = false;
+    const showWord = true;
+    const showMeaning = false;
+    const speakWord = false;
+    const speakMeaning = true;
 
     let voices = [];
     let words = [];
@@ -109,7 +113,11 @@
             const selectedVoice = voices[selectedVoiceIndex];
             const utterance = new SpeechSynthesisUtterance();
             utterance.voice = selectedVoice;
+            if(speakWord){
             utterance.text = word;
+            }else{
+              utterance.text = '';
+            }
 
             utterance.addEventListener('end', () => {
               if (!meaning) {
@@ -156,7 +164,9 @@
 
             }
             );
+           
             speechSynthesis.speak(utterance);
+            
           } else {
             alert("First select voice");
           }
@@ -169,7 +179,9 @@
     }
 
     function displayWord(word, currentCount, totalCount) {
+      if(showWord){
       wordContainer.textContent = word;
+      }
       meaningContainer.textContent = '';
       headerContainer.textContent = '';
       wordCountElement.textContent = `${currentCount} / ${totalCount}`;
@@ -183,14 +195,20 @@
     }
 
     function displayMeaning(word, currentCount, totalCount) {
-      meaningContainer.textContent = word;
+      if(showMeaning){
+        meaningContainer.textContent = word;
+      }
     }
 
 
     function speakMeaningWithSelectedVoice(voice, text) {
       const utterance = new SpeechSynthesisUtterance();
       utterance.voice = voice;
+      if(speakMeaning){
       utterance.text = text;
+      }else{
+        utterance.text = '';
+      }
       utterance.addEventListener('end', () => {
         readTextFile();
       });
