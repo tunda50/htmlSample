@@ -113,7 +113,7 @@
             const selectedVoice = voices[selectedVoiceIndex];
             const utterance = new SpeechSynthesisUtterance();
             utterance.voice = selectedVoice;
-            if(speakWord){
+            if(isHeader||speakWord){
             utterance.text = word;
             }else{
               utterance.text = '';
